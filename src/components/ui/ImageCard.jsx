@@ -1,0 +1,1 @@
+export default function ImageCard({ image, alt, children }) { return <div className="group overflow-hidden"><img src={image} alt={alt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />{children}</div> }

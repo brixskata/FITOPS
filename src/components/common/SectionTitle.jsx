@@ -1,0 +1,1 @@
+export default function SectionTitle({ eyebrow, title, align = 'left' }) { return <div className={align === 'center' ? 'text-center' : ''}><p className="section-kicker mb-4">{eyebrow}</p><h2 className="section-heading">{title}</h2></div> }
