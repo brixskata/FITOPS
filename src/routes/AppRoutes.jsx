@@ -7,8 +7,15 @@ import AdminLayout from '../layouts/AdminLayout'
 import AdminPlaceholder from '../pages/admin/AdminPlaceholder'
 import GuestRoute from './GuestRoute'
 import ProtectedRoute from './ProtectedRoute'
-import RoleDashboardPlaceholder from '../pages/RoleDashboardPlaceholder'
 import MembersPage from '../features/admin/members/MembersPage'
+import MemberLayout from '../features/member/MemberLayout'
+import MemberDashboard from '../features/member/pages/MemberDashboard'
+import MyMembership from '../features/member/pages/MyMembership'
+import Attendance from '../features/member/pages/Attendance'
+import Payments from '../features/member/pages/Payments'
+import MyProfile from '../features/member/pages/MyProfile'
+import MemberSettings from '../features/member/pages/MemberSettings'
+import RoleDashboardPlaceholder from '../pages/RoleDashboardPlaceholder'
 
 const adminPages = [
   ['dashboard', 'Dashboard'],
@@ -48,7 +55,15 @@ export default function AppRoutes() {
         <Route path="/trainer/dashboard" element={<RoleDashboardPlaceholder title="Trainer Dashboard" role="trainer" />} />
       </Route>
       <Route element={<ProtectedRoute allowedRoles={['member']} />}>
-        <Route path="/member/dashboard" element={<RoleDashboardPlaceholder title="Member Dashboard" role="member" />} />
+        <Route path="/member" element={<MemberLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<MemberDashboard />} />
+          <Route path="membership" element={<MyMembership />} />
+          <Route path="attendance" element={<Attendance />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="profile" element={<MyProfile />} />
+          <Route path="settings" element={<MemberSettings />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

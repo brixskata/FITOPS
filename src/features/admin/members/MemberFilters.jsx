@@ -1,12 +1,11 @@
 import { Search } from 'lucide-react'
 
-const membershipOptions = ['All Memberships', 'Elite Annual', 'Premium Annual', 'Pro Monthly', 'Strength Plus', 'Basic Flex', 'Family Plan']
-const statusOptions = ['All Status', 'Active', 'Trial', 'Suspended', 'Past Due']
-
 export default function MemberFilters({
   search,
   membershipFilter,
   statusFilter,
+  membershipOptions,
+  statusOptions,
   onSearchChange,
   onMembershipChange,
   onStatusChange,

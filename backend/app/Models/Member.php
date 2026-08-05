@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -32,6 +33,18 @@ class Member extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'date_of_birth' => 'date',
+        'joined_at' => 'datetime',
+        'height' => 'decimal:2',
+        'weight' => 'decimal:2',
+    ];
+
+    /**
      * Get the user that owns the member profile.
      */
     public function user(): BelongsTo
@@ -45,6 +58,14 @@ class Member extends Model
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
+    }
+
+    /**
+     * Get the most recent membership for the member.
+     */
+    public function latestMembership(): HasOne
+    {
+        return $this->hasOne(Membership::class)->latestOfMany('starts_at');
     }
 
     /**

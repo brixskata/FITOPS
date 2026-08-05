@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Eye, EyeOff } from 'lucide-react'
 import Button from '../../components/common/Button'
 import Logo from '../../components/common/Logo'
 import useAuth from '../../hooks/useAuth'
@@ -20,6 +21,8 @@ export default function Register() {
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -100,25 +103,45 @@ export default function Register() {
             autoComplete="email"
           />
           {errors.email && <p className="text-sm text-accent">{errors.email[0]}</p>}
-          <input
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full border border-white/20 bg-transparent px-4 py-4 text-white outline-none focus:border-accent"
-            type="password"
-            placeholder="Password"
-            autoComplete="new-password"
-          />
+          <div className="relative">
+            <input
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              className="w-full border border-white/20 bg-transparent px-4 py-4 pr-12 text-white outline-none focus:border-accent"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((value) => !value)}
+              className="absolute inset-y-0 right-3 flex items-center text-white/55 transition hover:text-accent"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
           {errors.password && <p className="text-sm text-accent">{errors.password[0]}</p>}
-          <input
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            className="w-full border border-white/20 bg-transparent px-4 py-4 text-white outline-none focus:border-accent"
-            type="password"
-            placeholder="Confirm Password"
-            autoComplete="new-password"
-          />
+          <div className="relative">
+            <input
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              className="w-full border border-white/20 bg-transparent px-4 py-4 pr-12 text-white outline-none focus:border-accent"
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword((value) => !value)}
+              className="absolute inset-y-0 right-3 flex items-center text-white/55 transition hover:text-accent"
+              aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
           {errors.confirmPassword && <p className="text-sm text-accent">{errors.confirmPassword[0]}</p>}
           <Button type="submit" disabled={submitting} className="mt-4 w-full">
             {submitting ? 'Creating account...' : 'Create Account'}
