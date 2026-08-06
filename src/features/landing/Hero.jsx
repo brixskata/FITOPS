@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowDownRight } from "lucide-react";
 import Button from "../../components/common/Button";
 
 export default function Hero() {
@@ -28,7 +29,10 @@ export default function Hero() {
 
         <Button href="#about" className="mt-10">
           Explore FitOps
-          <span className="ml-3 text-lg">↘</span>
+          <ArrowDownRight
+            className="ml-3 inline-block h-5 w-5"
+            strokeWidth={2.5}
+          />
         </Button>
       </motion.div>
     </section>
