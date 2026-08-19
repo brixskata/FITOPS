@@ -29,6 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+    Route::get('/admin/trainers', [TrainerController::class, 'adminIndex']);
+    Route::get('/admin/trainers/{id}', [TrainerController::class, 'adminShow']);
+    Route::post('/admin/trainers', [TrainerController::class, 'adminStore']);
+    Route::put('/admin/trainers/{id}', [TrainerController::class, 'adminUpdate']);
+    Route::patch('/admin/trainers/{id}/status', [TrainerController::class, 'adminUpdateStatus']);
     Route::get('/trainers', [TrainerController::class, 'index']);
     Route::get('/members', [MemberController::class, 'index']);
     Route::get('/members/{id}', [MemberController::class, 'show']);

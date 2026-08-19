@@ -3,13 +3,170 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Trainer\StoreTrainerRequest;
+use App\Http\Requests\Trainer\UpdateTrainerRequest;
+use App\Http\Requests\Trainer\UpdateTrainerStatusRequest;
+use App\Http\Resources\TrainerResource;
 use App\Models\Trainer;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class TrainerController extends Controller
 {
+    /**
+     * Return all Trainer profiles for Admin management, including inactive profiles.
+     */
+    public function adminIndex(Request $request): JsonResponse
+    {
+        $search = trim((string) $request->input('search', ''));
+        $status = strtolower((string) $request->input('status', 'all'));
+        $perPage = max(1, min($request->integer('per_page', 10), 25));
+
+        $trainers = Trainer::query()
+            ->with('user:id,name,email')
+            ->withCount('members')
+            ->when($search !== '', function ($trainerQuery) use ($search): void {
+                $trainerQuery->where(function ($subQuery) use ($search): void {
+                    $subQuery->where('employee_code', 'like', "%{$search}%")
+                        ->orWhere('specialization', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($userQuery) use ($search): void {
+                            $userQuery->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->when(in_array($status, ['active', 'inactive'], true), fn ($trainerQuery) => $trainerQuery->where('status', $status))
+            ->orderBy('employee_code')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return response()->json([
+            'message' => 'Admin Trainers retrieved successfully.',
+            'data' => [
+                'data' => TrainerResource::collection($trainers->getCollection())->resolve(),
+                'meta' => [
+                    'current_page' => $trainers->currentPage(),
+                    'last_page' => $trainers->lastPage(),
+                    'per_page' => $trainers->perPage(),
+                    'total' => $trainers->total(),
+                    'from' => $trainers->firstItem(),
+                    'to' => $trainers->lastItem(),
+                ],
+                'filters' => [
+                    'statuses' => ['active', 'inactive'],
+                ],
+            ],
+        ]);
+    }
+
+    public function adminShow(int $id): JsonResponse
+    {
+        $trainer = Trainer::query()
+            ->withCount('members')
+            ->with([
+                'user:id,name,email',
+                'members' => fn ($memberQuery) => $memberQuery
+                    ->select('id', 'user_id', 'trainer_id', 'status')
+                    ->with('user:id,name,email'),
+            ])
+            ->find($id);
+
+        if (! $trainer) {
+            return response()->json(['message' => 'Trainer not found.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Trainer retrieved successfully.',
+            'data' => (new TrainerResource($trainer))->resolve(),
+        ]);
+    }
+
+    public function adminStore(StoreTrainerRequest $request): JsonResponse
+    {
+        $trainer = DB::transaction(function () use ($request): Trainer {
+            $user = User::create([
+                'name' => $request->validated('name'),
+                'email' => $request->validated('email'),
+                'password' => Hash::make($request->validated('password')),
+            ]);
+
+            $user->assignRole('Trainer');
+
+            return $user->trainer()->create([
+                'employee_code' => $request->validated('employee_code'),
+                'specialization' => $request->validated('specialization'),
+                'bio' => $request->validated('bio'),
+                'experience_years' => $request->validated('experience_years'),
+                'hire_date' => $request->validated('hire_date'),
+                'status' => $request->validated('status'),
+            ]);
+        });
+
+        $trainer->load('user:id,name,email')->loadCount('members');
+
+        return response()->json([
+            'message' => 'Trainer created successfully.',
+            'data' => (new TrainerResource($trainer))->resolve(),
+        ], 201);
+    }
+
+    public function adminUpdate(UpdateTrainerRequest $request, int $id): JsonResponse
+    {
+        $trainer = Trainer::query()->with('user')->find($id);
+
+        if (! $trainer) {
+            return response()->json(['message' => 'Trainer not found.'], 404);
+        }
+
+        DB::transaction(function () use ($request, $trainer): void {
+            $trainer->user->fill([
+                'name' => $request->validated('name'),
+                'email' => $request->validated('email'),
+            ]);
+
+            if ($request->filled('password')) {
+                $trainer->user->password = Hash::make($request->validated('password'));
+            }
+
+            $trainer->user->save();
+            $trainer->update([
+                'employee_code' => $request->validated('employee_code'),
+                'specialization' => $request->validated('specialization'),
+                'bio' => $request->validated('bio'),
+                'experience_years' => $request->validated('experience_years'),
+                'hire_date' => $request->validated('hire_date'),
+                'status' => $request->validated('status'),
+            ]);
+        });
+
+        $trainer->load('user:id,name,email')->loadCount('members');
+
+        return response()->json([
+            'message' => 'Trainer updated successfully.',
+            'data' => (new TrainerResource($trainer))->resolve(),
+        ]);
+    }
+
+    public function adminUpdateStatus(UpdateTrainerStatusRequest $request, int $id): JsonResponse
+    {
+        $trainer = Trainer::query()->find($id);
+
+        if (! $trainer) {
+            return response()->json(['message' => 'Trainer not found.'], 404);
+        }
+
+        $trainer->update(['status' => $request->validated('status')]);
+        $trainer->load('user:id,name,email')->loadCount('members');
+
+        return response()->json([
+            'message' => 'Trainer status updated successfully.',
+            'data' => (new TrainerResource($trainer))->resolve(),
+        ]);
+    }
+
     /**
      * Return active Trainer profiles available for Admin member assignment.
      */
