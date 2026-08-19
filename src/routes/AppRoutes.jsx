@@ -15,7 +15,8 @@ import Attendance from '../features/member/pages/Attendance'
 import Payments from '../features/member/pages/Payments'
 import MyProfile from '../features/member/pages/MyProfile'
 import MemberSettings from '../features/member/pages/MemberSettings'
-import RoleDashboardPlaceholder from '../pages/RoleDashboardPlaceholder'
+import TrainerLayout from '../features/trainer/TrainerLayout'
+import TrainerDashboard from '../features/trainer/pages/TrainerDashboard'
 
 const adminPages = [
   ['dashboard', 'Dashboard'],
@@ -52,7 +53,10 @@ export default function AppRoutes() {
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={['trainer']} />}>
-        <Route path="/trainer/dashboard" element={<RoleDashboardPlaceholder title="Trainer Dashboard" role="trainer" />} />
+        <Route path="/trainer" element={<TrainerLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<TrainerDashboard />} />
+        </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={['member']} />}>
         <Route path="/member" element={<MemberLayout />}>

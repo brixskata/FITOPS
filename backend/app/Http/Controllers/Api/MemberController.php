@@ -26,7 +26,7 @@ class MemberController extends Controller
         $perPage = max(1, min($perPage, 25));
 
         $query = Member::query()
-            ->with(['user.roles', 'latestMembership.membershipPlan'])
+            ->with(['user.roles', 'trainer.user:id,name', 'latestMembership.membershipPlan'])
             ->when($search !== '', function ($memberQuery) use ($search): void {
                 $memberQuery->where(function ($subQuery) use ($search): void {
                     $subQuery->where('member_code', 'like', "%{$search}%")
@@ -83,7 +83,7 @@ class MemberController extends Controller
     public function show(int $id): JsonResponse
     {
         $member = Member::query()
-            ->with(['user.roles', 'memberships.membershipPlan', 'latestMembership.membershipPlan'])
+            ->with(['user.roles', 'trainer.user:id,name', 'memberships.membershipPlan', 'latestMembership.membershipPlan'])
             ->find($id);
 
         if (! $member) {
@@ -111,6 +111,7 @@ class MemberController extends Controller
 
             return $user->member()->create([
                 'member_code' => $request->validated('member_code') ?: $this->generateMemberCode(),
+                'trainer_id' => $request->validated('trainer_id'),
                 'phone' => $request->validated('phone'),
                 'gender' => $request->validated('gender'),
                 'date_of_birth' => $request->validated('date_of_birth'),
@@ -124,7 +125,7 @@ class MemberController extends Controller
             ]);
         });
 
-        $member->load(['user.roles', 'latestMembership.membershipPlan']);
+        $member->load(['user.roles', 'trainer.user:id,name', 'latestMembership.membershipPlan']);
 
         return response()->json([
             'message' => 'Member created successfully.',
@@ -158,6 +159,7 @@ class MemberController extends Controller
 
             $member->fill([
                 'member_code' => $request->validated('member_code') ?: $member->member_code,
+                'trainer_id' => $request->validated('trainer_id'),
                 'phone' => $request->validated('phone'),
                 'gender' => $request->validated('gender'),
                 'date_of_birth' => $request->validated('date_of_birth'),
@@ -172,7 +174,7 @@ class MemberController extends Controller
             $member->save();
         });
 
-        $member->load(['user.roles', 'latestMembership.membershipPlan']);
+        $member->load(['user.roles', 'trainer.user:id,name', 'latestMembership.membershipPlan']);
 
         return response()->json([
             'message' => 'Member updated successfully.',

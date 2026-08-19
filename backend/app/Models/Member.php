@@ -19,6 +19,7 @@ class Member extends Model
      */
     protected $fillable = [
         'user_id',
+        'trainer_id',
         'member_code',
         'phone',
         'gender',
@@ -50,6 +51,14 @@ class Member extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the trainer assigned to the member.
+     */
+    public function trainer(): BelongsTo
+    {
+        return $this->belongsTo(Trainer::class);
     }
 
     /**

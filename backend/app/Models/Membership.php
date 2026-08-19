@@ -11,6 +11,13 @@ class Membership extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'price' => 'decimal:2',
+        'auto_renew' => 'boolean',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

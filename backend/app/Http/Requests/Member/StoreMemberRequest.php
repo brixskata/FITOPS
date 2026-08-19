@@ -29,6 +29,7 @@ class StoreMemberRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'member_code' => ['nullable', 'string', 'max:50', Rule::unique('members', 'member_code')],
+            'trainer_id' => ['nullable', 'integer', Rule::exists('trainers', 'id')],
             'phone' => ['nullable', 'string', 'max:20'],
             'gender' => ['nullable', Rule::in(['male', 'female', 'other'])],
             'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],

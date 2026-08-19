@@ -16,6 +16,7 @@ const emptyForm = {
   emergency_contact_phone: '',
   height: '',
   weight: '',
+  trainer_id: null,
 }
 
 const fields = [
@@ -89,6 +90,9 @@ export default function MemberModal({
   onEdit,
   onDelete,
   onChange,
+  trainers = [],
+  trainersLoading = false,
+  trainersError = '',
 }) {
   useEffect(() => {
     if (!open) {
@@ -196,6 +200,26 @@ export default function MemberModal({
                 <Field field={fields[1]} value={displayFields.email} error={errors.email?.[0]} onChange={onChange} />
                 <Field field={fields[2]} value={displayFields.phone} error={errors.phone?.[0]} onChange={onChange} />
                 <Field field={fields[3]} value={displayFields.status} error={errors.status?.[0]} onChange={onChange} />
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-ink/70">Trainer</span>
+                  <select
+                    name="trainer_id"
+                    value={displayFields.trainer_id ?? ''}
+                    onChange={onChange}
+                    disabled={trainersLoading || Boolean(trainersError)}
+                    className="w-full rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-accent disabled:cursor-not-allowed disabled:bg-ink/[0.03]"
+                  >
+                    <option value="">{trainersLoading ? 'Loading Trainers...' : 'Unassigned'}</option>
+                    {!trainersLoading && !trainersError && trainers.map((trainer) => (
+                      <option key={trainer.id} value={trainer.id}>
+                        {trainer.name} · {trainer.employee_code}
+                      </option>
+                    ))}
+                  </select>
+                  {trainersError && <p className="mt-2 text-xs font-medium text-rose-600">{trainersError}</p>}
+                  {!trainersLoading && !trainersError && trainers.length === 0 && <p className="mt-2 text-xs text-ink/50">No active trainers available.</p>}
+                  {errors.trainer_id && <p className="mt-2 text-xs font-medium text-rose-600">{errors.trainer_id[0]}</p>}
+                </label>
                 <Field field={fields[4]} value={displayFields.gender} error={errors.gender?.[0]} onChange={onChange} />
                 <Field field={fields[5]} value={displayFields.date_of_birth} error={errors.date_of_birth?.[0]} onChange={onChange} />
                 <Field field={fields[6]} value={displayFields.height} error={errors.height?.[0]} onChange={onChange} />

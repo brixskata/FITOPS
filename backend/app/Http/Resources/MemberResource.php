@@ -18,6 +18,7 @@ class MemberResource extends JsonResource
         $latestMembership = $this->whenLoaded('latestMembership');
         $membershipPlan = $latestMembership?->membershipPlan;
         $fullName = (string) ($this->user?->name ?? '');
+        $trainer = $this->relationLoaded('trainer') ? $this->trainer : null;
 
         return [
             'id' => $this->id,
@@ -37,6 +38,13 @@ class MemberResource extends JsonResource
             'joined_at' => $this->joined_at?->toISOString(),
             'joined_date' => $this->joined_at?->format('M d, Y'),
             'avatar_initials' => $this->buildInitials($fullName),
+            'trainer_id' => $this->trainer_id,
+            'trainer' => $trainer ? [
+                'id' => $trainer->id,
+                'name' => $trainer->user?->name,
+                'employee_code' => $trainer->employee_code,
+                'status' => $trainer->status,
+            ] : null,
             'membership' => [
                 'id' => $latestMembership?->id,
                 'number' => $latestMembership?->membership_number,

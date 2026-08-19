@@ -31,6 +31,16 @@ export default function MemberTableRow({ member, onAction }) {
       <td className="px-4 py-4">{member.email}</td>
       <td className="px-4 py-4 whitespace-nowrap">{member.phone}</td>
       <td className="px-4 py-4">
+        {member.trainer ? (
+          <div>
+            <p className="font-medium text-ink">{member.trainer.name}</p>
+            {member.trainer.employee_code && <p className="mt-1 text-xs text-ink/45">{member.trainer.employee_code}</p>}
+          </div>
+        ) : (
+          <span className="text-sm text-ink/45">Unassigned</span>
+        )}
+      </td>
+      <td className="px-4 py-4">
         <span className={classNames('inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.2em]', statusStyles[member.status], !statusStyles[member.status] && 'border-ink/10 bg-ink/5 text-ink/60')}>
           {member.status_label ?? member.status}
         </span>

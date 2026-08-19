@@ -1,12 +1,12 @@
 import MemberTableRow from './MemberTableRow'
 
-const columns = ['Avatar', 'Member Code', 'Full Name', 'Email', 'Phone', 'Membership Status', 'Joined Date', 'Actions']
+const columns = ['Avatar', 'Member Code', 'Full Name', 'Email', 'Phone', 'Trainer', 'Membership Status', 'Joined Date', 'Actions']
 
 export default function MemberTable({ members, onAction }) {
   return (
     <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-[0_18px_60px_rgba(18,18,18,0.06)]">
       <div className="overflow-x-auto">
-        <table className="min-w-[1120px] w-full border-separate border-spacing-0">
+        <table className="min-w-[1240px] w-full border-separate border-spacing-0">
           <thead className="bg-[#fbfbf9]">
             <tr>
               {columns.map((column) => (

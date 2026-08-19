@@ -15,6 +15,7 @@ import {
   removeMember,
   updateMember,
 } from '../../../services/memberService'
+import { listTrainers } from '../../../services/trainerService'
 
 const pageSize = 5
 
@@ -32,6 +33,7 @@ const initialForm = {
   emergency_contact_phone: '',
   height: '',
   weight: '',
+  trainer_id: null,
 }
 
 const buildFormFromMember = (member = {}) => ({
@@ -48,6 +50,7 @@ const buildFormFromMember = (member = {}) => ({
   emergency_contact_phone: member.emergency_contact_phone ?? '',
   height: member.height ?? '',
   weight: member.weight ?? '',
+  trainer_id: member.trainer_id ?? null,
 })
 
 const emptyPagination = {
@@ -86,6 +89,35 @@ export default function MembersPage() {
   const [modalMessage, setModalMessage] = useState('')
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [trainers, setTrainers] = useState([])
+  const [trainersLoading, setTrainersLoading] = useState(true)
+  const [trainersError, setTrainersError] = useState('')
+
+  useEffect(() => {
+    let active = true
+
+    const loadTrainers = async () => {
+      setTrainersLoading(true)
+      setTrainersError('')
+
+      try {
+        const trainerOptions = await listTrainers()
+        if (active) setTrainers(trainerOptions)
+      } catch (error) {
+        if (!active) return
+        setTrainers([])
+        setTrainersError(error.message || 'Unable to load active Trainers.')
+      } finally {
+        if (active) setTrainersLoading(false)
+      }
+    }
+
+    loadTrainers()
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -185,13 +217,18 @@ export default function MembersPage() {
     setModalMessage('')
 
     try {
+      const payload = {
+        ...form,
+        trainer_id: form.trainer_id === '' || form.trainer_id == null ? null : Number(form.trainer_id),
+      }
+
       if (modalState.mode === 'edit' && modalState.member) {
-        await updateMember(modalState.member.id, form)
+        await updateMember(modalState.member.id, payload)
         closeMemberModal()
         setRefreshToken((value) => value + 1)
         toast.success('Member updated successfully.')
       } else {
-        await createMember(form)
+        await createMember(payload)
         closeMemberModal()
         setRefreshToken((value) => value + 1)
         toast.success('Member created successfully.')
@@ -318,6 +355,9 @@ export default function MembersPage() {
         onEdit={() => openMemberModal('edit', modalState.member)}
         onDelete={handleDelete}
         onChange={handleFieldChange}
+        trainers={trainers}
+        trainersLoading={trainersLoading}
+        trainersError={trainersError}
       />
     </div>
   )

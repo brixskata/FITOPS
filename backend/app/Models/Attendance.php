@@ -10,6 +10,11 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'checked_in_at' => 'datetime',
+        'checked_out_at' => 'datetime',
+    ];
+
     /**
      * The table associated with the model.
      */
