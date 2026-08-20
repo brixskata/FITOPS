@@ -10,6 +10,11 @@ class Payment extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

@@ -10,6 +10,10 @@ class MembershipPlan extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

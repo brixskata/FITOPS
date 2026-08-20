@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MemberDashboardController;
+use App\Http\Controllers\Api\MembershipController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\TrainerController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +32,25 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+    Route::get('/admin/attendance', [AttendanceController::class, 'index']);
+    Route::post('/admin/attendance/check-in', [AttendanceController::class, 'checkIn']);
+    Route::post('/admin/attendance/{id}/check-out', [AttendanceController::class, 'checkOut'])->whereNumber('id');
+    Route::get('/admin/attendance/{id}', [AttendanceController::class, 'show'])->whereNumber('id');
+    Route::get('/admin/payments', [PaymentController::class, 'index']);
+    Route::get('/admin/payments/{id}', [PaymentController::class, 'show']);
+    Route::post('/admin/payments', [PaymentController::class, 'store']);
+    Route::patch('/admin/payments/{id}/status', [PaymentController::class, 'updateStatus']);
+    Route::get('/admin/memberships', [MembershipController::class, 'index']);
+    Route::get('/admin/memberships/{id}', [MembershipController::class, 'show']);
+    Route::post('/admin/memberships', [MembershipController::class, 'store']);
+    Route::put('/admin/memberships/{id}', [MembershipController::class, 'update']);
+    Route::patch('/admin/memberships/{id}/status', [MembershipController::class, 'updateStatus']);
+    Route::post('/admin/memberships/{id}/renew', [MembershipController::class, 'renew']);
+    Route::get('/admin/membership-plans', [MembershipPlanController::class, 'adminIndex']);
+    Route::get('/admin/membership-plans/{id}', [MembershipPlanController::class, 'adminShow']);
+    Route::post('/admin/membership-plans', [MembershipPlanController::class, 'adminStore']);
+    Route::put('/admin/membership-plans/{id}', [MembershipPlanController::class, 'adminUpdate']);
+    Route::patch('/admin/membership-plans/{id}/status', [MembershipPlanController::class, 'adminUpdateStatus']);
     Route::get('/admin/trainers', [TrainerController::class, 'adminIndex']);
     Route::get('/admin/trainers/{id}', [TrainerController::class, 'adminShow']);
     Route::post('/admin/trainers', [TrainerController::class, 'adminStore']);

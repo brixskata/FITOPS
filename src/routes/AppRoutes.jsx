@@ -18,13 +18,13 @@ import MemberSettings from '../features/member/pages/MemberSettings'
 import TrainerLayout from '../features/trainer/TrainerLayout'
 import TrainerDashboard from '../features/trainer/pages/TrainerDashboard'
 import TrainersPage from '../features/admin/trainers/TrainersPage'
+import MembershipPlansPage from '../features/admin/membershipPlans/MembershipPlansPage'
+import MembershipsPage from '../features/admin/memberships/MembershipsPage'
+import PaymentsPage from '../features/admin/payments/PaymentsPage'
+import AttendancePage from '../features/admin/attendance/AttendancePage'
 
 const adminPages = [
   ['dashboard', 'Dashboard'],
-  ['membership-plans', 'Membership Plans'],
-  ['memberships', 'Memberships'],
-  ['payments', 'Payments'],
-  ['attendance', 'Attendance'],
   ['equipment', 'Equipment'],
   ['maintenance', 'Maintenance'],
   ['reports', 'Reports'],
@@ -44,6 +44,10 @@ export default function AppRoutes() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="members" element={<MembersPage />} />
           <Route path="trainers" element={<TrainersPage />} />
+          <Route path="membership-plans" element={<MembershipPlansPage />} />
+          <Route path="memberships" element={<MembershipsPage />} />
+          <Route path="payments" element={<PaymentsPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
           {adminPages.map(([path, title]) => (
             <Route
               key={path}
