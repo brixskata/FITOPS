@@ -96,7 +96,7 @@ class TrainerController extends Controller
             $user->assignRole('Trainer');
 
             return $user->trainer()->create([
-                'employee_code' => $request->validated('employee_code'),
+                'employee_code' => $this->generateEmployeeCode(),
                 'specialization' => $request->validated('specialization'),
                 'bio' => $request->validated('bio'),
                 'experience_years' => $request->validated('experience_years'),
@@ -133,7 +133,6 @@ class TrainerController extends Controller
 
             $trainer->user->save();
             $trainer->update([
-                'employee_code' => $request->validated('employee_code'),
                 'specialization' => $request->validated('specialization'),
                 'bio' => $request->validated('bio'),
                 'experience_years' => $request->validated('experience_years'),
@@ -283,6 +282,28 @@ class TrainerController extends Controller
             'hire_date' => $trainer->hire_date?->toDateString(),
             'status' => $trainer->status,
         ];
+    }
+
+    protected function generateEmployeeCode(): string
+    {
+        $prefix = 'TRN-DEV-';
+        $highestSequence = Trainer::query()
+            ->where('employee_code', 'like', $prefix . '%')
+            ->lockForUpdate()
+            ->pluck('employee_code')
+            ->map(function (string $code) use ($prefix): int {
+                $suffix = substr($code, strlen($prefix));
+
+                return ctype_digit($suffix) ? (int) $suffix : 0;
+            })
+            ->max() ?? 0;
+
+        do {
+            $highestSequence++;
+            $employeeCode = $prefix . str_pad((string) $highestSequence, 3, '0', STR_PAD_LEFT);
+        } while (Trainer::query()->where('employee_code', $employeeCode)->exists());
+
+        return $employeeCode;
     }
 
     protected function profileNotFoundResponse(): JsonResponse

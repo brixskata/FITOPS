@@ -18,7 +18,6 @@ class UpdateTrainerRequest extends FormRequest
     {
         $this->merge([
             'status' => Str::lower((string) $this->input('status', 'active')),
-            'employee_code' => trim((string) $this->input('employee_code', '')),
         ]);
     }
 
@@ -36,12 +35,6 @@ class UpdateTrainerRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($trainer?->user_id),
             ],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'employee_code' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('trainers', 'employee_code')->ignore($trainer?->id),
-            ],
             'specialization' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string'],
             'experience_years' => ['nullable', 'integer', 'min:0', 'max:100'],

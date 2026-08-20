@@ -17,7 +17,6 @@ class StoreTrainerRequest extends FormRequest
     {
         $this->merge([
             'status' => Str::lower((string) $this->input('status', 'active')),
-            'employee_code' => trim((string) $this->input('employee_code', '')),
         ]);
     }
 
@@ -27,7 +26,6 @@ class StoreTrainerRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'employee_code' => ['required', 'string', 'max:50', Rule::unique('trainers', 'employee_code')],
             'specialization' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string'],
             'experience_years' => ['nullable', 'integer', 'min:0', 'max:100'],

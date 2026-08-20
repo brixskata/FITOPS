@@ -17,10 +17,10 @@ import MyProfile from '../features/member/pages/MyProfile'
 import MemberSettings from '../features/member/pages/MemberSettings'
 import TrainerLayout from '../features/trainer/TrainerLayout'
 import TrainerDashboard from '../features/trainer/pages/TrainerDashboard'
+import TrainersPage from '../features/admin/trainers/TrainersPage'
 
 const adminPages = [
   ['dashboard', 'Dashboard'],
-  ['trainers', 'Trainers'],
   ['membership-plans', 'Membership Plans'],
   ['memberships', 'Memberships'],
   ['payments', 'Payments'],
@@ -43,6 +43,7 @@ export default function AppRoutes() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="members" element={<MembersPage />} />
+          <Route path="trainers" element={<TrainersPage />} />
           {adminPages.map(([path, title]) => (
             <Route
               key={path}
