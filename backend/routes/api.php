@@ -4,10 +4,15 @@ use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\MemberController;
+use App\Http\Controllers\Api\MemberAttendanceController;
 use App\Http\Controllers\Api\MemberDashboardController;
+use App\Http\Controllers\Api\MemberMembershipController;
+use App\Http\Controllers\Api\MemberPaymentController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\TrainerController;
+use App\Http\Controllers\Api\TrainerAttendanceController;
+use App\Http\Controllers\Api\TrainerMembersController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -17,11 +22,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 
-    Route::middleware('role:Member')->get('/member/dashboard', [MemberDashboardController::class, 'show']);
+    Route::middleware('role:Member')->group(function () {
+        Route::get('/member/dashboard', [MemberDashboardController::class, 'show']);
+        Route::get('/member/attendance', [MemberAttendanceController::class, 'index']);
+        Route::get('/member/attendance/{id}', [MemberAttendanceController::class, 'show'])->whereNumber('id');
+        Route::get('/member/membership', [MemberMembershipController::class, 'current']);
+        Route::get('/member/memberships', [MemberMembershipController::class, 'index']);
+        Route::get('/member/memberships/{id}', [MemberMembershipController::class, 'show'])->whereNumber('id');
+        Route::get('/member/payments', [MemberPaymentController::class, 'index']);
+        Route::get('/member/payments/{id}', [MemberPaymentController::class, 'show'])->whereNumber('id');
+    });
 
     Route::middleware('role:Trainer')->group(function () {
         Route::get('/trainer/dashboard', [TrainerController::class, 'dashboard']);
         Route::get('/trainer/profile', [TrainerController::class, 'profile']);
+        Route::get('/trainer/attendance', [TrainerAttendanceController::class, 'index']);
+        Route::get('/trainer/attendance/{id}', [TrainerAttendanceController::class, 'show'])->whereNumber('id');
+        Route::get('/trainer/members', [TrainerMembersController::class, 'index']);
+        Route::get('/trainer/members/{id}', [TrainerMembersController::class, 'show'])->whereNumber('id');
     });
 
     Route::get('/membership-plans', [MembershipPlanController::class, 'index']);

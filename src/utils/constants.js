@@ -1,1 +1,0 @@
-export const API_ENDPOINTS = { login: '/login', logout: '/logout', user: '/user', members: '/members', memberships: '/memberships', payments: '/payments', attendance: '/attendance', equipment: '/equipment', dashboard: '/dashboard' }

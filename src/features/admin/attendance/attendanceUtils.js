@@ -37,3 +37,13 @@ export const toManilaDateTimeInput = (value = new Date()) => {
   }).formatToParts(value).reduce((result, part) => ({ ...result, [part.type]: part.value }), {})
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`
 }
+
+export const getManilaCheckInMaximum = (value = new Date()) => {
+  const current = toManilaDateTimeInput(value)
+  const fiveMinutesLater = toManilaDateTimeInput(new Date(value.getTime() + (5 * 60 * 1000)))
+  const today = current.slice(0, 10)
+
+  return fiveMinutesLater.startsWith(today)
+    ? fiveMinutesLater
+    : `${today}T23:59`
+}

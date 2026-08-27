@@ -17,6 +17,8 @@ import MyProfile from '../features/member/pages/MyProfile'
 import MemberSettings from '../features/member/pages/MemberSettings'
 import TrainerLayout from '../features/trainer/TrainerLayout'
 import TrainerDashboard from '../features/trainer/pages/TrainerDashboard'
+import TrainerAttendancePage from '../features/trainer/attendance/TrainerAttendancePage'
+import TrainerMembersPage from '../features/trainer/members/TrainerMembersPage'
 import TrainersPage from '../features/admin/trainers/TrainersPage'
 import MembershipPlansPage from '../features/admin/membershipPlans/MembershipPlansPage'
 import MembershipsPage from '../features/admin/memberships/MembershipsPage'
@@ -61,6 +63,8 @@ export default function AppRoutes() {
         <Route path="/trainer" element={<TrainerLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<TrainerDashboard />} />
+          <Route path="members" element={<TrainerMembersPage />} />
+          <Route path="attendance" element={<TrainerAttendancePage />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={['member']} />}>

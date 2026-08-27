@@ -1,0 +1,3 @@
+export default function LoadingSkeleton() {
+  return <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-[0_16px_50px_rgba(18,18,18,0.04)]" aria-label="Loading payment history"><div className="animate-pulse border-b border-ink/10 p-5 sm:p-6"><div className="h-8 w-52 rounded-lg bg-ink/5" /></div><div className="hidden animate-pulse p-6 md:block"><div className="h-5 rounded bg-ink/5" />{[1, 2, 3, 4, 5].map((item) => <div key={item} className="mt-5 h-12 rounded-xl bg-ink/[0.035]" />)}</div><div className="divide-y divide-ink/10 md:hidden">{[1, 2, 3].map((item) => <div key={item} className="animate-pulse p-5"><div className="h-4 w-32 rounded bg-ink/5" /><div className="mt-4 h-20 rounded-xl bg-ink/[0.035]" /></div>)}</div></div>
+}

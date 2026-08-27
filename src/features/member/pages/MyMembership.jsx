@@ -1,5 +1,3 @@
-import { CheckCircle2 } from 'lucide-react'
-import { membership } from '../memberData'
-import { MembershipCard, PageIntro } from '../components/MemberUI'
+import MemberMembershipPage from '../membership/MemberMembershipPage'
 
-export default function MyMembership() { return <div className="space-y-8"><PageIntro eyebrow="My account" title="My membership" description="Review your current plan, benefits, and renewal details." /><div className="grid gap-6 lg:grid-cols-[1.1fr_.9fr]"><MembershipCard /><div className="rounded-2xl border border-ink/10 bg-white p-6 shadow-[0_16px_50px_rgba(18,18,18,0.04)] sm:p-8"><p className="section-kicker text-ink/45">Plan benefits</p><h3 className="mt-2 font-heading text-3xl uppercase text-ink">Included with Elite</h3><div className="mt-7 space-y-4">{membership.benefits.map((benefit) => <div key={benefit} className="flex items-center gap-3 text-sm text-ink/70"><CheckCircle2 size={18} className="shrink-0 text-ink" /><span>{benefit}</span></div>)}</div><div className="mt-8 border-t border-ink/10 pt-5"><p className="text-xs text-ink/40">Started on</p><p className="mt-1 text-sm font-semibold text-ink">{membership.started}</p></div></div></div></div> }
+export default function MyMembership() { return <MemberMembershipPage /> }
