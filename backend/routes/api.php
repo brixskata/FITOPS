@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MemberAttendanceController;
 use App\Http\Controllers\Api\MemberDashboardController;
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
     Route::get('/admin/attendance', [AttendanceController::class, 'index']);
     Route::post('/admin/attendance/check-in', [AttendanceController::class, 'checkIn']);
     Route::post('/admin/attendance/{id}/check-out', [AttendanceController::class, 'checkOut'])->whereNumber('id');

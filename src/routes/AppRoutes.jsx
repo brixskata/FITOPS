@@ -24,9 +24,9 @@ import MembershipPlansPage from '../features/admin/membershipPlans/MembershipPla
 import MembershipsPage from '../features/admin/memberships/MembershipsPage'
 import PaymentsPage from '../features/admin/payments/PaymentsPage'
 import AttendancePage from '../features/admin/attendance/AttendancePage'
+import AdminDashboardPage from '../features/admin/dashboard/AdminDashboardPage'
 
 const adminPages = [
-  ['dashboard', 'Dashboard'],
   ['equipment', 'Equipment'],
   ['maintenance', 'Maintenance'],
   ['reports', 'Reports'],
@@ -44,6 +44,7 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="members" element={<MembersPage />} />
           <Route path="trainers" element={<TrainersPage />} />
           <Route path="membership-plans" element={<MembershipPlansPage />} />

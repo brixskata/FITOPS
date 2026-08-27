@@ -1,0 +1,10 @@
+import { ArrowUpRight, Users } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { formatDateTime, humanize, statusClass } from './dashboardUtils'
+
+export default function RecentMembers({ members = [] }) {
+  return <section className="rounded-3xl border border-ink/10 bg-white p-6 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:p-7"><Header icon={Users} title="Recent Members" to="/admin/members" />{members.length ? <div className="mt-6 divide-y divide-ink/10">{members.map((member) => <div key={member.id} className="flex items-center gap-3 py-4 first:pt-0 last:pb-0"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-bold text-accent">{member.name?.charAt(0).toUpperCase() || 'M'}</div><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold text-ink">{member.name || 'Member unavailable'}</p><p className="mt-1 truncate text-xs text-ink/45">{member.member_code || member.email || 'Details unavailable'}</p></div><div className="text-right"><span className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${statusClass(member.status)}`}>{humanize(member.status)}</span><p className="mt-1 text-[10px] text-ink/35">{formatDateTime(member.created_at)}</p></div></div>)}</div> : <Empty text="No recent Members." />}</section>
+}
+
+function Header({ icon: Icon, title, to }) { return <div className="flex items-center justify-between gap-3"><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent"><Icon size={18} /></span><h2 className="font-heading text-2xl uppercase text-ink">{title}</h2></div><Link to={to} className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-ink/50 transition hover:text-ink">View all <ArrowUpRight size={14} /></Link></div> }
+function Empty({ text }) { return <div className="mt-8 rounded-2xl border border-dashed border-ink/15 px-4 py-8 text-center text-sm text-ink/50">{text}</div> }

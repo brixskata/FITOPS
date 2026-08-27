@@ -1,0 +1,3 @@
+export default function LoadingSkeleton() {
+  return <div className="space-y-6" aria-label="Loading Admin Dashboard"><div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">{Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-32 animate-pulse rounded-3xl bg-ink/10" />)}</div><div className="grid gap-6 lg:grid-cols-2"><div className="h-72 animate-pulse rounded-3xl bg-ink/10" /><div className="h-72 animate-pulse rounded-3xl bg-ink/10" /></div><div className="grid gap-6 lg:grid-cols-2"><div className="h-80 animate-pulse rounded-3xl bg-ink/10" /><div className="h-80 animate-pulse rounded-3xl bg-ink/10" /></div></div>
+}
