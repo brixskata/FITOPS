@@ -32,7 +32,7 @@ export default function MemberSidebar({ open, onClose }) {
           <button type="button" onClick={onClose} aria-label="Close sidebar" className="rounded-full p-2 text-white/60 transition hover:bg-white/10 hover:text-white lg:hidden"><X size={20} /></button>
         </div>
         <div className="mt-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-bold text-ink">BS</div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-bold text-ink">ME</div>
           <div className="min-w-0"><p className="truncate text-sm font-semibold">Member workspace</p><p className="mt-0.5 text-xs text-white/45">Your FitOps journey</p></div>
         </div>
         <p className="mt-10 px-3 text-[10px] font-bold uppercase tracking-[0.24em] text-white/35">My workspace</p>

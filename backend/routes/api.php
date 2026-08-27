@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\MemberAttendanceController;
 use App\Http\Controllers\Api\MemberDashboardController;
 use App\Http\Controllers\Api\MemberMembershipController;
 use App\Http\Controllers\Api\MemberPaymentController;
+use App\Http\Controllers\Api\MemberPasswordController;
+use App\Http\Controllers\Api\MemberProfileController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\TrainerController;
@@ -31,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/member/memberships/{id}', [MemberMembershipController::class, 'show'])->whereNumber('id');
         Route::get('/member/payments', [MemberPaymentController::class, 'index']);
         Route::get('/member/payments/{id}', [MemberPaymentController::class, 'show'])->whereNumber('id');
+        Route::get('/member/profile', [MemberProfileController::class, 'show']);
+        Route::patch('/member/profile', [MemberProfileController::class, 'update']);
+        Route::patch('/member/password', [MemberPasswordController::class, 'update']);
     });
 
     Route::middleware('role:Trainer')->group(function () {
