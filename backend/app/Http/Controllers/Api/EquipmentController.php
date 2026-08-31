@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipmentController extends Controller
 {
@@ -118,7 +119,13 @@ class EquipmentController extends Controller
 
     public function store(StoreEquipmentRequest $request): JsonResponse
     {
-        $equipment = Equipment::create($request->validated());
+        $equipment = DB::transaction(function () use ($request): Equipment {
+            $equipment = Equipment::create($request->validated());
+            $equipment->asset_code = 'EQ-' . str_pad((string) $equipment->id, 6, '0', STR_PAD_LEFT);
+            $equipment->save();
+
+            return $equipment;
+        });
 
         return response()->json([
             'message' => 'Equipment created successfully.',

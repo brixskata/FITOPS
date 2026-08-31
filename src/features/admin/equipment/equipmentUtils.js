@@ -7,7 +7,6 @@ export const labelize = (value) => String(value ?? '').replaceAll('_', ' ').repl
 
 export const emptyEquipmentForm = {
   name: '',
-  asset_code: '',
   category: 'cardio',
   brand: '',
   model: '',
@@ -31,7 +30,6 @@ export const toDateInputValue = (value) => {
 
 export const buildEquipmentForm = (equipment = {}) => ({
   name: equipment.name ?? '',
-  asset_code: equipment.asset_code ?? '',
   category: equipment.category ?? 'cardio',
   brand: equipment.brand ?? '',
   model: equipment.model ?? '',
@@ -45,7 +43,6 @@ export const buildEquipmentForm = (equipment = {}) => ({
 
 export const buildEquipmentPayload = (form) => ({
   name: form.name.trim(),
-  asset_code: form.asset_code.trim() || null,
   category: form.category,
   brand: form.brand.trim() || null,
   model: form.model.trim() || null,

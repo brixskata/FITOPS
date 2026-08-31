@@ -5,7 +5,6 @@ import { categories, conditions, labelize, statuses } from './equipmentUtils'
 
 const fields = [
   { name: 'name', label: 'Equipment Name', type: 'text', required: true },
-  { name: 'asset_code', label: 'Asset Code', type: 'text' },
   { name: 'brand', label: 'Brand', type: 'text' },
   { name: 'model', label: 'Model', type: 'text' },
   { name: 'last_maintenance_at', label: 'Last Maintenance', type: 'date' },

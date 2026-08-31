@@ -16,7 +16,6 @@ class Equipment extends Model
      */
     protected $fillable = [
         'name',
-        'asset_code',
         'category',
         'brand',
         'model',
