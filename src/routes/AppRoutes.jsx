@@ -25,9 +25,9 @@ import MembershipsPage from '../features/admin/memberships/MembershipsPage'
 import PaymentsPage from '../features/admin/payments/PaymentsPage'
 import AttendancePage from '../features/admin/attendance/AttendancePage'
 import AdminDashboardPage from '../features/admin/dashboard/AdminDashboardPage'
+import EquipmentPage from '../features/admin/equipment/EquipmentPage'
 
 const adminPages = [
-  ['equipment', 'Equipment'],
   ['maintenance', 'Maintenance'],
   ['reports', 'Reports'],
   ['settings', 'Settings'],
@@ -51,6 +51,7 @@ export default function AppRoutes() {
           <Route path="memberships" element={<MembershipsPage />} />
           <Route path="payments" element={<PaymentsPage />} />
           <Route path="attendance" element={<AttendancePage />} />
+          <Route path="equipment" element={<EquipmentPage />} />
           {adminPages.map(([path, title]) => (
             <Route
               key={path}
