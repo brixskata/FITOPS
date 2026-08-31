@@ -22,7 +22,7 @@ export default function EquipmentFilters({ search, filters, onSearchChange, onFi
           <h1 className="mt-3 font-heading text-3xl uppercase tracking-wide text-ink sm:text-4xl">Equipment management</h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-ink/55">Track gym equipment, current condition, operational status, and maintenance needs from one workspace.</p>
         </div>
-        <button type="button" onClick={onAddEquipment} className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-white hover:shadow-lg hover:shadow-accent/20"><Plus size={17} /> Add Equipment</button>
+      <button type="button" onClick={onAddEquipment} className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20"><Plus size={17} /> Add Equipment</button>
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_170px_170px_190px_200px]">
         <label className="relative block sm:col-span-2 xl:col-span-1">

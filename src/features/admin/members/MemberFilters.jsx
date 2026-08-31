@@ -25,7 +25,7 @@ export default function MemberFilters({
         <button
           type="button"
           onClick={onAddMember}
-          className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-white hover:shadow-lg hover:shadow-accent/20"
+          className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20"
         >
           + Add Member
         </button>
