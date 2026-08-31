@@ -7,21 +7,33 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request): JsonResponse
     {
-        $user = User::create([
-            'name' => $request->validated('name'),
-            'email' => $request->validated('email'),
-            'password' => Hash::make($request->validated('password')),
-        ]);
+        $user = DB::transaction(function () use ($request): User {
+            $user = User::create([
+                'name' => $request->validated('name'),
+                'email' => $request->validated('email'),
+                'password' => Hash::make($request->validated('password')),
+            ]);
 
-        $user->assignRole('Member');
+            $user->assignRole('Member');
+            $user->member()->create([
+                'member_code' => 'MBR-' . now()->format('ymdHis') . '-' . Str::upper(Str::random(4)),
+                'joined_at' => now(),
+                'status' => 'active',
+            ]);
+
+            return $user;
+        });
+
         $user->load('roles');
 
         $token = $user->createToken('auth-token')->plainTextToken;
