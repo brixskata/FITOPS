@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Bell, ChevronDown, Menu, Moon, Search, Settings, UserRound } from 'lucide-react'
 import { classNames } from '../../utils/helpers'
 import useAuth from '../../hooks/useAuth'
@@ -18,20 +18,18 @@ const labels = {
   settings: 'Settings',
 }
 
-export default function TopNavbar({ onMenuClick }) {
+export default function TopNavbar({ onMenuClick, onLogoutRequest }) {
   const location = useLocation()
-  const navigate = useNavigate()
-  const { logout, user } = useAuth()
+  const { user } = useAuth()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const currentKey = location.pathname.split('/').filter(Boolean).pop() || 'dashboard'
   const title = labels[currentKey] || 'Dashboard'
   const displayName = user?.name ?? 'Admin'
   const avatarInitial = displayName.charAt(0).toUpperCase()
 
-  const handleLogout = async () => {
-    await logout()
+  const handleLogoutRequest = () => {
     setUserMenuOpen(false)
-    navigate('/login', { replace: true })
+    onLogoutRequest()
   }
 
   return (
@@ -69,7 +67,7 @@ export default function TopNavbar({ onMenuClick }) {
               <div className="absolute right-0 top-14 w-48 rounded-2xl border border-ink/10 bg-white p-2 shadow-xl">
                 <Link to="/admin/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink/70 transition hover:bg-ink/5 hover:text-ink"><UserRound size={16} /> Profile</Link>
                 <Link to="/admin/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink/70 transition hover:bg-ink/5 hover:text-ink"><Settings size={16} /> Settings</Link>
-                <button type="button" onClick={handleLogout} className="mt-1 block w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-ink transition hover:bg-accent/10">Logout</button>
+                <button type="button" onClick={handleLogoutRequest} className="mt-1 block w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-ink transition hover:bg-accent/10">Logout</button>
               </div>
             )}
           </div>

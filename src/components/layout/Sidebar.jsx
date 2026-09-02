@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import {
   BarChart3,
   CalendarCheck,
@@ -15,7 +15,6 @@ import {
 } from 'lucide-react'
 import Logo from '../common/Logo'
 import { classNames } from '../../utils/helpers'
-import useAuth from '../../hooks/useAuth'
 
 const navItems = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -31,14 +30,10 @@ const navItems = [
   { label: 'Settings', path: '/admin/settings', icon: Settings },
 ]
 
-export default function Sidebar({ open, onClose }) {
-  const navigate = useNavigate()
-  const { logout } = useAuth()
-
-  const handleLogout = async () => {
-    await logout()
+export default function Sidebar({ open, onClose, onLogoutRequest }) {
+  const handleLogoutRequest = () => {
     onClose()
-    navigate('/login', { replace: true })
+    onLogoutRequest()
   }
 
   return (
@@ -115,7 +110,7 @@ export default function Sidebar({ open, onClose }) {
         <div className="mt-5 border-t border-white/10 pt-4">
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={handleLogoutRequest}
             className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-white/60 transition hover:bg-white/10 hover:text-white"
           >
             <LogOut size={18} strokeWidth={1.8} />
