@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import ConfirmRetireDialog from './ConfirmRetireDialog'
 import EquipmentDetailsModal from './EquipmentDetailsModal'
 import EquipmentFilters from './EquipmentFilters'
 import EquipmentModal from './EquipmentModal'
@@ -41,6 +42,7 @@ export default function EquipmentPage() {
   const [formErrors, setFormErrors] = useState({})
   const [saving, setSaving] = useState(false)
   const [retiringId, setRetiringId] = useState(null)
+  const [retireTarget, setRetireTarget] = useState(null)
   const [details, setDetails] = useState({ open: false, loading: false, equipment: null, error: '' })
 
   useEffect(() => {
@@ -157,13 +159,14 @@ export default function EquipmentPage() {
     }
   }
 
-  const retireEquipment = async (item) => {
-    if (!window.confirm('Retire ' + item.name + '? This will keep the record but mark it as retired.')) return
+  const retireEquipment = async () => {
+    if (!retireTarget) return
 
-    setRetiringId(item.id)
+    setRetiringId(retireTarget.id)
     try {
-      await updateEquipment(item.id, { ...buildEquipmentPayload(buildEquipmentForm(item)), status: 'retired' })
+      await updateEquipment(retireTarget.id, { ...buildEquipmentPayload(buildEquipmentForm(retireTarget)), status: 'retired' })
       toast.success('Equipment retired successfully.')
+      setRetireTarget(null)
       setRefreshToken((value) => value + 1)
     } catch (error) {
       toast.error(getEquipmentErrorMessage(error, 'Unable to retire the Equipment.'))
@@ -191,7 +194,7 @@ export default function EquipmentPage() {
         <EmptyState filtered={emptyMessage === 'filtered'} onReset={resetFilters} onAddEquipment={openCreate} />
       ) : (
         <>
-          <EquipmentTable equipment={equipment} onView={openDetails} onEdit={openEdit} onRetire={retireEquipment} retiringId={retiringId} />
+          <EquipmentTable equipment={equipment} onView={openDetails} onEdit={openEdit} onRetire={setRetireTarget} retiringId={retiringId} />
           <div className="flex flex-col gap-3 rounded-3xl border border-ink/10 bg-white px-5 py-4 text-sm text-ink/60 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:flex-row sm:items-center sm:justify-between">
             <p>Showing <span className="font-semibold text-ink">{pagination.from ?? 0}</span> to <span className="font-semibold text-ink">{pagination.to ?? 0}</span> of <span className="font-semibold text-ink">{pagination.total ?? 0}</span> Equipment</p>
             <div className="flex items-center gap-2">
@@ -205,6 +208,7 @@ export default function EquipmentPage() {
 
       <EquipmentModal open={modal.open} mode={modal.mode} form={form} errors={formErrors} message={modal.message} saving={saving} onClose={closeModal} onSubmit={handleSubmit} onChange={handleChange} />
       <EquipmentDetailsModal open={details.open} loading={details.loading} equipment={details.equipment} error={details.error} onClose={() => setDetails({ open: false, loading: false, equipment: null, error: '' })} onEdit={openEdit} />
+      <ConfirmRetireDialog equipment={retireTarget} loading={retiringId !== null} onCancel={() => setRetireTarget(null)} onConfirm={retireEquipment} />
     </div>
   )
 }

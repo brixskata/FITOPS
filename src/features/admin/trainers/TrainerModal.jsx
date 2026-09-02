@@ -1,3 +1,4 @@
+import AdminModal from '../../../components/common/AdminModal'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Eye, EyeOff, LoaderCircle, X } from 'lucide-react'
@@ -40,8 +41,8 @@ export default function TrainerModal({ open, mode, loading, form, errors, messag
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.div role="dialog" aria-modal="true" aria-labelledby="trainer-modal-title" initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.25 }} className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <AdminModal>
+          <motion.div role="dialog" aria-modal="true" aria-labelledby="trainer-modal-title" initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.25 }} className="flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
             <div className="flex shrink-0 items-start justify-between border-b border-ink/10 px-6 py-5 sm:px-8">
               <div><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Admin workspace</p><h2 id="trainer-modal-title" className="mt-2 font-heading text-3xl uppercase tracking-wide text-ink">{isEditing ? 'Edit Trainer' : 'Add Trainer'}</h2></div>
               <button type="button" onClick={onClose} aria-label="Close Trainer modal" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 text-ink/60 transition hover:border-accent hover:text-ink"><X size={18} /></button>
@@ -64,7 +65,7 @@ export default function TrainerModal({ open, mode, loading, form, errors, messag
             </div>
             <div className="flex shrink-0 flex-col-reverse gap-3 border-t border-ink/10 bg-white px-6 py-4 sm:flex-row sm:justify-end sm:px-8"><Button type="button" onClick={onClose} disabled={saving} className="w-full bg-white text-ink hover:bg-accent sm:w-auto">Cancel</Button><Button type="submit" form="trainer-form" disabled={saving || loading} className="w-full sm:w-auto">{saving ? (isEditing ? 'Updating...' : 'Saving...') : isEditing ? 'Update Trainer' : 'Save Trainer'}</Button></div>
           </motion.div>
-        </motion.div>
+        </AdminModal>
       )}
     </AnimatePresence>
   )

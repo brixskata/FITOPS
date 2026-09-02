@@ -1,3 +1,4 @@
+import AdminModal from '../../../components/common/AdminModal'
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import Button from '../../../components/common/Button'
@@ -139,8 +140,8 @@ export default function MemberModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
-      <div className="my-auto flex w-full max-w-4xl max-h-[90vh] flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white text-ink shadow-2xl">
+    <AdminModal backdropClassName="bg-black/70">
+      <div className="my-auto flex w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white text-ink shadow-2xl">
         <div className="shrink-0 px-6 pt-6">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -166,7 +167,7 @@ export default function MemberModal({
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
           {isDelete ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 p-5">
               <p className="text-sm leading-6 text-rose-900">
@@ -330,6 +331,6 @@ export default function MemberModal({
           )}
         </div>
       </div>
-    </div>
+    </AdminModal>
   )
 }

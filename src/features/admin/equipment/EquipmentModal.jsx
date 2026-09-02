@@ -1,3 +1,4 @@
+import AdminModal from '../../../components/common/AdminModal'
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import Button from '../../../components/common/Button'
@@ -51,11 +52,11 @@ export default function EquipmentModal({ open, mode, form, errors, message, savi
   const formId = 'equipment-modal-form'
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
-      <div className="my-auto flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white text-ink shadow-2xl">
+    <AdminModal backdropClassName="bg-black/70">
+      <div className="my-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white text-ink shadow-2xl">
         <div className="shrink-0 px-6 pt-6"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Equipment module</p><h3 className="mt-2 font-heading text-3xl uppercase tracking-wide">{editing ? 'Edit Equipment' : 'Add Equipment'}</h3></div><button type="button" onClick={onClose} className="rounded-full border border-ink/10 p-2 text-ink/60 transition hover:border-accent hover:text-ink" aria-label="Close equipment modal"><X size={18} /></button></div></div>
         {message && <div className="shrink-0 px-6 pt-4"><div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{message}</div></div>}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
           <form id={formId} className="space-y-5" onSubmit={onSubmit}>
             <div className="grid gap-4 sm:grid-cols-2">
               {fields.slice(0, 4).map((field) => <Field key={field.name} field={field} value={form[field.name]} error={errors[field.name]} onChange={onChange} />)}
@@ -70,6 +71,6 @@ export default function EquipmentModal({ open, mode, form, errors, message, savi
         </div>
         <div className="flex shrink-0 flex-col-reverse gap-3 border-t border-ink/10 bg-white px-6 py-4 sm:flex-row sm:justify-end"><Button type="button" onClick={onClose} className="w-full bg-white text-ink hover:bg-accent sm:w-auto" disabled={saving}>Cancel</Button><Button type="submit" form={formId} disabled={saving} className="w-full sm:w-auto">{saving ? 'Saving...' : editing ? 'Save Changes' : 'Add Equipment'}</Button></div>
       </div>
-    </div>
+    </AdminModal>
   )
 }
