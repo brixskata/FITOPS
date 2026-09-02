@@ -5,6 +5,7 @@ A modern full-stack Gym Management System built with React, Laravel 12, Sanctum,
 ## 🚀 Tech Stack
 
 ### Frontend
+
 - React
 - Vite
 - Tailwind CSS
@@ -12,6 +13,7 @@ A modern full-stack Gym Management System built with React, Laravel 12, Sanctum,
 - Axios
 
 ### Backend
+
 - Laravel 12
 - Sanctum Authentication
 - Spatie Laravel Permission
@@ -31,10 +33,12 @@ A modern full-stack Gym Management System built with React, Laravel 12, Sanctum,
 
 ## 📁 Project Structure
 
+```text
 FITOPS/
 ├── backend/
 ├── docs/
-├── src/
+└── src/
+```
 
 ## 📌 Status
 
