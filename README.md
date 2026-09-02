@@ -2,6 +2,10 @@
 
 A modern full-stack Gym Management System built with React, Laravel 12, Sanctum, and MySQL.
 
+## 🌐 Live Website
+
+[https://fitops.site/](https://fitops.site/)
+
 ## 🚀 Tech Stack
 
 ### Frontend
