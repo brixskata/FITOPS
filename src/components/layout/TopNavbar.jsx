@@ -18,7 +18,7 @@ const labels = {
   settings: 'Settings',
 }
 
-export default function TopNavbar({ onMenuClick, onLogoutRequest }) {
+export default function TopNavbar({ onMenuClick }) {
   const location = useLocation()
   const { user } = useAuth()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -26,11 +26,6 @@ export default function TopNavbar({ onMenuClick, onLogoutRequest }) {
   const title = labels[currentKey] || 'Dashboard'
   const displayName = user?.name ?? 'Admin'
   const avatarInitial = displayName.charAt(0).toUpperCase()
-
-  const handleLogoutRequest = () => {
-    setUserMenuOpen(false)
-    onLogoutRequest()
-  }
 
   return (
     <header className="sticky top-0 z-20 border-b border-ink/10 bg-[#f7f7f5]/90 backdrop-blur-xl">
@@ -67,7 +62,6 @@ export default function TopNavbar({ onMenuClick, onLogoutRequest }) {
               <div className="absolute right-0 top-14 w-48 rounded-2xl border border-ink/10 bg-white p-2 shadow-xl">
                 <Link to="/admin/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink/70 transition hover:bg-ink/5 hover:text-ink"><UserRound size={16} /> Profile</Link>
                 <Link to="/admin/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink/70 transition hover:bg-ink/5 hover:text-ink"><Settings size={16} /> Settings</Link>
-                <button type="button" onClick={handleLogoutRequest} className="mt-1 block w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-ink transition hover:bg-accent/10">Logout</button>
               </div>
             )}
           </div>

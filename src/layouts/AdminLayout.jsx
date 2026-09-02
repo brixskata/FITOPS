@@ -32,7 +32,7 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-[#f7f7f5] text-ink">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} onLogoutRequest={() => setLogoutDialogOpen(true)} />
       <div className="min-h-screen lg:pl-72">
-        <TopNavbar onMenuClick={() => setSidebarOpen(true)} onLogoutRequest={() => setLogoutDialogOpen(true)} />
+        <TopNavbar onMenuClick={() => setSidebarOpen(true)} />
         <main>
           <PageContainer>
             <Outlet />
