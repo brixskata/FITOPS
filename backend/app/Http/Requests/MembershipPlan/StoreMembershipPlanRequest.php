@@ -38,7 +38,8 @@ class StoreMembershipPlanRequest extends FormRequest
             'slug' => ['required', 'string', 'max:255', Rule::unique('membership_plans', 'slug')],
             'description' => ['nullable', 'string'],
             'duration_days' => ['required', 'integer', 'min:1'],
-            'price' => ['required', 'numeric', 'min:0'],
+            'cost' => ['required', 'numeric', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0', 'gte:cost'],
             'status' => ['required', Rule::in(['active', 'inactive'])],
         ];
     }

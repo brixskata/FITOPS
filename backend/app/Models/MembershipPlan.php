@@ -12,6 +12,7 @@ class MembershipPlan extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'cost' => 'decimal:2',
     ];
 
     /**
@@ -25,6 +26,7 @@ class MembershipPlan extends Model
         'description',
         'duration_days',
         'price',
+        'cost',
         'status',
     ];
 

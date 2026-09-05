@@ -15,6 +15,7 @@ class Membership extends Model
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'price' => 'decimal:2',
+        'cost' => 'decimal:2',
         'auto_renew' => 'boolean',
     ];
 
@@ -30,6 +31,7 @@ class Membership extends Model
         'starts_at',
         'ends_at',
         'price',
+        'cost',
         'status',
         'auto_renew',
     ];

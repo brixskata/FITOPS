@@ -26,10 +26,10 @@ import PaymentsPage from '../features/admin/payments/PaymentsPage'
 import AttendancePage from '../features/admin/attendance/AttendancePage'
 import AdminDashboardPage from '../features/admin/dashboard/AdminDashboardPage'
 import EquipmentPage from '../features/admin/equipment/EquipmentPage'
+import ReportsPage from '../features/admin/reports/ReportsPage'
 
 const adminPages = [
   ['maintenance', 'Maintenance'],
-  ['reports', 'Reports'],
   ['settings', 'Settings'],
 ]
 
@@ -52,6 +52,7 @@ export default function AppRoutes() {
           <Route path="payments" element={<PaymentsPage />} />
           <Route path="attendance" element={<AttendancePage />} />
           <Route path="equipment" element={<EquipmentPage />} />
+          <Route path="reports" element={<ReportsPage />} />
           {adminPages.map(([path, title]) => (
             <Route
               key={path}

@@ -100,6 +100,7 @@ class MembershipController extends Controller
                 'starts_at' => $startsAt,
                 'ends_at' => $endsAt,
                 'price' => $plan->price,
+                'cost' => $plan->cost,
                 'status' => $endsAt->isPast() ? 'expired' : 'active',
                 'auto_renew' => $request->boolean('auto_renew'),
             ]);
@@ -215,6 +216,7 @@ class MembershipController extends Controller
                 'starts_at' => $startsAt,
                 'ends_at' => $endsAt,
                 'price' => $membership->membershipPlan->price,
+                'cost' => $membership->membershipPlan->cost,
                 'status' => 'active',
                 'auto_renew' => $membership->auto_renew,
             ]);

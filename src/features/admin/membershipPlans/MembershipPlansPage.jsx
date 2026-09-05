@@ -18,8 +18,8 @@ import {
 
 const pageSize = 10
 const emptyPagination = { current_page: 1, last_page: 1, per_page: pageSize, total: 0, from: null, to: null }
-const emptyForm = { name: '', description: '', duration_days: '', price: '', status: 'active' }
-const buildForm = (plan = {}) => ({ name: plan.name ?? '', description: plan.description ?? '', duration_days: plan.duration_days ?? '', price: plan.price ?? '', status: plan.status ?? 'active' })
+const emptyForm = { name: '', description: '', duration_days: '', cost: '', markup_amount: '', price: '', status: 'active' }
+const buildForm = (plan = {}) => ({ name: plan.name ?? '', description: plan.description ?? '', duration_days: plan.duration_days ?? '', cost: plan.cost ?? '', markup_amount: plan.markup_amount ?? Number(plan.price ?? 0) - Number(plan.cost ?? 0), price: plan.price ?? '', status: plan.status ?? 'active' })
 const toastMessage = (error) => error?.isNetworkError ? 'Unable to connect to the server.' : 'Something went wrong.'
 
 export default function MembershipPlansPage() {
@@ -69,7 +69,7 @@ export default function MembershipPlansPage() {
   const handleChange = (event) => { const { name, value } = event.target; setForm((current) => ({ ...current, [name]: value })); setFormErrors((current) => ({ ...current, [name]: null })); setModal((current) => ({ ...current, message: '' })) }
   const handleSubmit = async (event) => {
     event.preventDefault(); setSaving(true); setFormErrors({}); setModal((current) => ({ ...current, message: '' }))
-    const payload = { name: form.name, description: form.description || null, duration_days: Number(form.duration_days), price: Number(form.price), status: form.status }
+    const payload = { name: form.name, description: form.description || null, duration_days: Number(form.duration_days), cost: Number(form.cost), price: Number(form.cost) + Number(form.markup_amount), status: form.status }
     try {
       if (modal.mode === 'edit' && modal.planId) { await updateMembershipPlan(modal.planId, payload); toast.success('Membership Plan updated successfully.') } else { await createMembershipPlan(payload); toast.success('Membership Plan created successfully.') }
       closeModal(); setRefreshToken((value) => value + 1)

@@ -35,6 +35,7 @@ class MembershipResource extends JsonResource
             'starts_at' => $this->starts_at?->toISOString(),
             'ends_at' => $this->ends_at?->toISOString(),
             'price' => $this->price,
+            'cost' => $this->cost,
             'status' => $status,
             'auto_renew' => (bool) $this->auto_renew,
             'payments_count' => (int) ($this->payments_count ?? 0),

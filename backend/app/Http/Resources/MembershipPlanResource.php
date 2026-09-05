@@ -19,6 +19,8 @@ class MembershipPlanResource extends JsonResource
             'description' => $this->description,
             'duration_days' => $this->duration_days,
             'price' => $this->price,
+            'cost' => $this->cost,
+            'markup_amount' => number_format((float) $this->price - (float) $this->cost, 2, '.', ''),
             'status' => $this->status,
             'memberships_count' => (int) ($this->memberships_count ?? 0),
             'created_at' => $this->created_at?->toISOString(),
