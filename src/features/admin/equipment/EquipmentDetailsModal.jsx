@@ -10,7 +10,7 @@ function Detail({ label, value }) {
 
 const formatDate = (value) => value ? new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'
 
-export default function EquipmentDetailsModal({ open, loading, equipment, error, onClose, onEdit }) {
+export default function EquipmentDetailsModal({ open, loading, equipment, error, onClose, onEdit, onViewMaintenance }) {
   useEffect(() => {
     if (!open) return undefined
     const originalOverflow = document.body.style.overflow
@@ -31,7 +31,7 @@ export default function EquipmentDetailsModal({ open, loading, equipment, error,
           {!loading && error && <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{error}</div>}
           {!loading && !error && equipment && <div className="grid gap-4 sm:grid-cols-2"><Detail label="Equipment Name" value={equipment.name} /><Detail label="Asset Code" value={equipment.asset_code} /><Detail label="Category" value={equipment.category_label || labelize(equipment.category)} /><Detail label="Brand" value={equipment.brand} /><Detail label="Model" value={equipment.model} /><Detail label="Condition" value={equipment.condition_label || labelize(equipment.condition)} /><Detail label="Status" value={equipment.status_label || labelize(equipment.status)} /><Detail label="Maintenance Status" value={maintenanceStatusLabel(equipment.maintenance_status)} /><Detail label="Last Maintenance" value={formatDate(equipment.last_maintenance_at)} /><Detail label="Next Maintenance" value={formatDate(equipment.next_maintenance_at)} /><div className="sm:col-span-2"><Detail label="Maintenance Notes" value={equipment.maintenance_notes} /></div><div className="sm:col-span-2"><Detail label="Notes" value={equipment.notes} /></div></div>}
         </div>
-        <div className="flex shrink-0 flex-col-reverse gap-3 border-t border-ink/10 bg-white px-6 py-4 sm:flex-row sm:justify-end"><Button type="button" onClick={onClose} className="w-full bg-white text-ink hover:bg-accent sm:w-auto">Close</Button>{equipment && !error && <Button type="button" onClick={() => onEdit(equipment)} className="w-full sm:w-auto">Edit Equipment</Button>}</div>
+        <div className="flex shrink-0 flex-col-reverse gap-3 border-t border-ink/10 bg-white px-6 py-4 sm:flex-row sm:justify-end"><Button type="button" onClick={onClose} className="w-full bg-white text-ink hover:bg-accent sm:w-auto">Close</Button>{equipment && !error && <><Button type="button" onClick={() => onViewMaintenance(equipment.id)} className="w-full sm:w-auto">View Maintenance</Button><Button type="button" onClick={() => onEdit(equipment)} className="w-full sm:w-auto">Edit Equipment</Button></>}</div>
       </div>
     </AdminModal>
   )

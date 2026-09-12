@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import MaintenanceDetailsModal from './MaintenanceDetailsModal'
 import MaintenanceFilters from './MaintenanceFilters'
@@ -25,7 +26,15 @@ const pageSize = 10
 const emptyPagination = { current_page: 1, last_page: 1, per_page: pageSize, total: 0, from: null, to: null }
 const initialFilters = { equipment_id: 'all', maintenance_type: 'all', status: 'all', date_from: '', date_to: '' }
 
+const getEquipmentIdFromUrl = (value) => {
+  if (!/^\d+$/.test(value ?? '') || Number(value) < 1) return 'all'
+  return String(Number(value))
+}
+
 export default function MaintenancePage() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const equipmentIdParam = searchParams.get('equipment_id')
+  const equipmentIdFromUrl = getEquipmentIdFromUrl(equipmentIdParam)
   const [records, setRecords] = useState([])
   const [equipment, setEquipment] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,7 +43,7 @@ export default function MaintenancePage() {
   const [pageError, setPageError] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
-  const [filters, setFilters] = useState(initialFilters)
+  const [filters, setFilters] = useState(() => ({ ...initialFilters, equipment_id: equipmentIdFromUrl }))
   const [currentPage, setCurrentPage] = useState(1)
   const [pagination, setPagination] = useState(emptyPagination)
   const [refreshToken, setRefreshToken] = useState(0)
@@ -43,6 +52,20 @@ export default function MaintenancePage() {
   const [formErrors, setFormErrors] = useState({})
   const [saving, setSaving] = useState(false)
   const [details, setDetails] = useState({ open: false, loading: false, record: null, error: '' })
+
+  useEffect(() => {
+    setFilters((current) => current.equipment_id === equipmentIdFromUrl
+      ? current
+      : { ...current, equipment_id: equipmentIdFromUrl })
+  }, [equipmentIdFromUrl])
+
+  useEffect(() => {
+    if (!equipmentIdParam || equipmentIdParam === equipmentIdFromUrl) return
+
+    const nextParams = new URLSearchParams(searchParams)
+    nextParams.delete('equipment_id')
+    setSearchParams(nextParams, { replace: true })
+  }, [equipmentIdFromUrl, equipmentIdParam, searchParams, setSearchParams])
 
   useEffect(() => {
     const timer = window.setTimeout(() => setSearch(searchInput), 250)
@@ -161,6 +184,15 @@ export default function MaintenancePage() {
 
   const handleFilterChange = (name, value) => {
     setFilters((current) => ({ ...current, [name]: value }))
+
+    if (name === 'equipment_id') {
+      const nextParams = new URLSearchParams(searchParams)
+
+      if (value === 'all') nextParams.delete('equipment_id')
+      else nextParams.set('equipment_id', value)
+
+      setSearchParams(nextParams, { replace: true })
+    }
   }
 
   const filtered = Boolean(search || filters.equipment_id !== 'all' || filters.maintenance_type !== 'all' || filters.status !== 'all' || filters.date_from || filters.date_to)

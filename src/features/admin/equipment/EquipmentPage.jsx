@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import ConfirmRetireDialog from './ConfirmRetireDialog'
 import EquipmentDetailsModal from './EquipmentDetailsModal'
@@ -28,6 +29,7 @@ const initialFilters = { category: 'all', condition: 'all', status: 'all', maint
 const getToastMessage = (error) => error?.isNetworkError ? 'Unable to connect to the server.' : 'Something went wrong.'
 
 export default function EquipmentPage() {
+  const navigate = useNavigate()
   const [equipment, setEquipment] = useState([])
   const [loading, setLoading] = useState(true)
   const [pageError, setPageError] = useState('')
@@ -159,6 +161,11 @@ export default function EquipmentPage() {
     }
   }
 
+  const viewMaintenance = (equipmentId) => {
+    setDetails({ open: false, loading: false, equipment: null, error: '' })
+    navigate(`/admin/maintenance?equipment_id=${encodeURIComponent(equipmentId)}`)
+  }
+
   const retireEquipment = async () => {
     if (!retireTarget) return
 
@@ -207,7 +214,7 @@ export default function EquipmentPage() {
       )}
 
       <EquipmentModal open={modal.open} mode={modal.mode} form={form} errors={formErrors} message={modal.message} saving={saving} onClose={closeModal} onSubmit={handleSubmit} onChange={handleChange} />
-      <EquipmentDetailsModal open={details.open} loading={details.loading} equipment={details.equipment} error={details.error} onClose={() => setDetails({ open: false, loading: false, equipment: null, error: '' })} onEdit={openEdit} />
+      <EquipmentDetailsModal open={details.open} loading={details.loading} equipment={details.equipment} error={details.error} onClose={() => setDetails({ open: false, loading: false, equipment: null, error: '' })} onEdit={openEdit} onViewMaintenance={viewMaintenance} />
       <ConfirmRetireDialog equipment={retireTarget} loading={retiringId !== null} onCancel={() => setRetireTarget(null)} onConfirm={retireEquipment} />
     </div>
   )
