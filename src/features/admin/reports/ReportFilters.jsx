@@ -13,7 +13,7 @@ export default function ReportFilters({ filters, draft, preset, error, loading, 
       <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-ink/45"><Filter size={15} /> Reporting filters</div>
-          <p className="mt-2 text-sm text-ink/55">Choose a Manila calendar period for your operational reports.</p>
+          <p className="mt-2 text-sm text-ink/55">Choose a Manila calendar period for your financial report.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {presets.map((item) => <button key={item.key} type="button" onClick={() => onPreset(item.key)} className={`rounded-full border px-3 py-2 text-xs font-semibold transition ${preset === item.key ? 'border-accent bg-accent text-ink' : 'border-ink/10 text-ink/60 hover:border-accent'}`}>{item.label}</button>)}

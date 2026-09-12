@@ -15,6 +15,11 @@ const presetFilters = (preset) => {
   return null
 }
 
+const formatReportDate = (value) => {
+  if (!value) return ''
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'Asia/Manila' }).format(new Date(value + 'T00:00:00+08:00'))
+}
+
 function LoadingState() {
   return <div className="space-y-6" aria-label="Loading Reports"><div className="h-36 animate-pulse rounded-3xl bg-ink/10" /><div className="h-96 animate-pulse rounded-3xl bg-ink/10" /></div>
 }
@@ -68,22 +73,20 @@ export default function ReportsPage() {
 
   return <div className="space-y-6">
     <div className="rounded-3xl border border-ink/10 bg-white p-5 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:p-6">
-      <p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Admin workspace</p>
-      <h1 className="mt-2 font-heading text-4xl uppercase tracking-wide text-ink sm:text-5xl">Reports</h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">Generate business and financial reports for a selected Manila calendar period.</p>
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Admin workspace</p><h1 className="mt-2 font-heading text-4xl uppercase tracking-wide text-ink sm:text-5xl">Reports</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-ink/60">View financial performance and membership sales for the selected period.</p></div>
+        <button type="button" disabled={!report || loading} onClick={() => generateReportPdf(report, filters)} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"><FileText size={17} /> Generate PDF</button>
+      </div>
     </div>
 
     <section className="rounded-3xl border border-ink/10 bg-white p-5 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:p-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Report configuration</p><h2 className="mt-2 font-heading text-3xl uppercase tracking-wide text-ink">Choose report period</h2><p className="mt-2 text-sm text-ink/55">Select the calendar range and grouping for the financial report.</p></div>
-        <button type="button" disabled={!report || loading} onClick={() => generateReportPdf(report, filters)} className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"><FileText size={17} /> Generate PDF</button>
-      </div>
+      <div><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Report configuration</p><h2 className="mt-2 font-heading text-3xl uppercase tracking-wide text-ink">Choose report period</h2><p className="mt-2 text-sm text-ink/55">Select the calendar range and grouping for the financial report.</p></div>
       <div className="mt-5"><ReportFilters filters={filters} draft={draft} preset={preset} error={filterError} loading={loading} embedded onPreset={selectPreset} onDraftChange={updateDraft} onApply={() => applyFilters(draft)} /></div>
     </section>
 
     {loading && !report ? <LoadingState /> : error ? <ErrorState message={getAdminReportsErrorMessage(error)} onRetry={() => setReload((value) => value + 1)} /> : report ? <section className="rounded-3xl border border-ink/10 bg-white p-5 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:p-8">
-      <div className="border-b border-ink/10 pb-6"><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">FitOps · Gym Management System</p><h2 className="mt-2 font-heading text-4xl uppercase tracking-wide text-ink">Business Financial Report</h2><p className="mt-3 text-sm text-ink/55">Selected period: {report.period?.date_from} — {report.period?.date_to}</p><p className="mt-1 text-xs text-ink/40">Generated: {todayManila()} · Reporting timezone: {report.period?.timezone || 'Asia/Manila'}</p></div>
-      <div className="mt-7 space-y-8"><div><p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Executive summary</p><ReportSummaryCards summary={report.summary} /></div><div><h2 className="mb-4 font-heading text-3xl uppercase tracking-wide text-ink">Membership Sales</h2><MembershipsReport report={{ membership_sales: report.membership_sales }} /></div></div>
-    </section> : <ErrorState message="The Reports API returned no report data." onRetry={() => setReload((value) => value + 1)} />}
+      <div className="border-b border-ink/10 pb-6"><p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">FitOps · Gym Management System</p><h2 className="mt-2 font-heading text-4xl uppercase tracking-wide text-ink">Business Financial Report</h2><p className="mt-3 text-sm text-ink/55">{formatReportDate(report.period?.date_from)} — {formatReportDate(report.period?.date_to)}</p></div>
+      <div className="mt-7 space-y-8"><ReportSummaryCards summary={report.summary} /><div><h2 className="mb-4 font-heading text-3xl uppercase tracking-wide text-ink">Membership Sales</h2><MembershipsReport report={{ membership_sales: report.membership_sales }} /></div></div>
+    </section> : <ErrorState message="The Reports API returned no report data." onRetry={() => setReload((value) => setReload((value) + 1))} />}
   </div>
 }
