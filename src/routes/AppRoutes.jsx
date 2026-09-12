@@ -4,7 +4,6 @@ import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Register from '../pages/Register'
 import AdminLayout from '../layouts/AdminLayout'
-import AdminPlaceholder from '../pages/admin/AdminPlaceholder'
 import GuestRoute from './GuestRoute'
 import ProtectedRoute from './ProtectedRoute'
 import MembersPage from '../features/admin/members/MembersPage'
@@ -28,10 +27,7 @@ import AdminDashboardPage from '../features/admin/dashboard/AdminDashboardPage'
 import EquipmentPage from '../features/admin/equipment/EquipmentPage'
 import ReportsPage from '../features/admin/reports/ReportsPage'
 import MaintenancePage from '../features/admin/maintenance/MaintenancePage'
-
-const adminPages = [
-  ['settings', 'Settings'],
-]
+import SettingsPage from '../features/admin/settings/SettingsPage'
 
 export default function AppRoutes() {
   return (
@@ -54,13 +50,7 @@ export default function AppRoutes() {
           <Route path="equipment" element={<EquipmentPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="maintenance" element={<MaintenancePage />} />
-          {adminPages.map(([path, title]) => (
-            <Route
-              key={path}
-              path={path}
-              element={<AdminPlaceholder title={title} />}
-            />
-          ))}
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={['trainer']} />}>

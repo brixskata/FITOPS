@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AdminSettingsController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MemberAttendanceController;
@@ -60,6 +61,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+    Route::put('/admin/profile', [AdminSettingsController::class, 'updateProfile']);
+    Route::put('/admin/password', [AdminSettingsController::class, 'updatePassword']);
     Route::get('/admin/reports/overview', [ReportsController::class, 'overview']);
     Route::get('/admin/attendance', [AttendanceController::class, 'index']);
     Route::post('/admin/attendance/check-in', [AttendanceController::class, 'checkIn']);

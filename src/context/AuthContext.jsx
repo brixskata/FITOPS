@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
 import * as authService from '../services/authService'
 
 export const AuthContext = createContext(null)
@@ -48,6 +48,11 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  const updateUser = useCallback((nextUser) => {
+    setUser(nextUser)
+    return nextUser
+  }, [])
+
   const value = useMemo(() => ({
     user,
     role,
@@ -89,6 +94,7 @@ export function AuthProvider({ children }) {
       setUser(nextUser)
       return nextUser
     },
+    updateUser,
     async logout() {
       try {
         if (authService.getStoredToken()) {
@@ -100,7 +106,7 @@ export function AuthProvider({ children }) {
         setUser(null)
       }
     },
-  }), [isAuthenticated, loading, role, token, user])
+  }), [isAuthenticated, loading, role, token, updateUser, user])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
