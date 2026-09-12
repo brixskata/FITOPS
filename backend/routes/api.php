@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\MemberMembershipController;
 use App\Http\Controllers\Api\MemberPaymentController;
 use App\Http\Controllers\Api\MemberPasswordController;
 use App\Http\Controllers\Api\MemberProfileController;
+use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReportsController;
@@ -68,6 +69,10 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     Route::get('/admin/equipment/{id}', [EquipmentController::class, 'show'])->whereNumber('id');
     Route::post('/admin/equipment', [EquipmentController::class, 'store']);
     Route::put('/admin/equipment/{id}', [EquipmentController::class, 'update'])->whereNumber('id');
+    Route::get('/admin/maintenance', [MaintenanceController::class, 'index']);
+    Route::get('/admin/maintenance/{id}', [MaintenanceController::class, 'show'])->whereNumber('id');
+    Route::post('/admin/maintenance', [MaintenanceController::class, 'store']);
+    Route::put('/admin/maintenance/{id}', [MaintenanceController::class, 'update'])->whereNumber('id');
     Route::get('/admin/payments', [PaymentController::class, 'index']);
     Route::get('/admin/payments/{id}', [PaymentController::class, 'show']);
     Route::post('/admin/payments', [PaymentController::class, 'store']);
