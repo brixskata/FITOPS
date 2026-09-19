@@ -25,18 +25,10 @@ export default function AttendanceFilters({
 
   return (
     <div className="rounded-3xl border border-ink/10 bg-white p-5 shadow-[0_18px_60px_rgba(18,18,18,0.05)] sm:p-6">
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-ink/45">Admin workspace</p>
-          <h1 className="mt-2 font-heading text-4xl uppercase tracking-wide text-ink">Attendance</h1>
-          <p className="mt-2 max-w-xl text-sm leading-6 text-ink/60">Review gym visits and manage Member check-in and check-out sessions.</p>
-        </div>
-        <Button type="button" onClick={onCheckIn} className="h-11 whitespace-nowrap">
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(220px,1.4fr)_minmax(180px,1fr)_minmax(180px,1fr)_150px_150px_160px_auto]">
+        <Button type="button" onClick={onCheckIn} className="order-first h-11 whitespace-nowrap md:col-span-2 xl:order-last xl:col-span-1">
           <Plus size={16} /> Check In
         </Button>
-      </div>
-
-      <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(220px,1.4fr)_minmax(180px,1fr)_minmax(180px,1fr)_150px_150px_160px]">
         <label className="relative block">
           <span className="sr-only">Search attendance by Member</span>
           <Search size={17} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink/40" />
