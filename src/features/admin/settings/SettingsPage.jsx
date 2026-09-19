@@ -70,16 +70,6 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/40">Admin workspace</p>
-        <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="font-heading text-4xl uppercase tracking-wide text-ink sm:text-5xl">Settings</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink/55">Manage your account and security preferences.</p>
-          </div>
-        </div>
-      </div>
-
       {pageError && <div role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-6 text-amber-900">{pageError}</div>}
 
       {loading ? <SettingsSkeleton /> : <div className="space-y-6"><ProfileSection form={profile} errors={errors} saving={saving} onChange={onChange} onSubmit={submitProfile} /><SecuritySection /><SystemInformationSection /></div>}
