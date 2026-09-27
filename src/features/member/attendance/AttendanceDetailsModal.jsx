@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarDays, Clock3, RefreshCw, X } from 'lucide-react'
+import AdminModal from '../../../components/common/AdminModal'
 import { formatAttendanceDate, formatAttendanceDateTime, formatAttendanceDuration } from './attendanceUtils'
 
 export default function AttendanceDetailsModal({ open, loading, error, attendance, onClose, onRetry }) {
@@ -37,8 +38,16 @@ export default function AttendanceDetailsModal({ open, loading, error, attendanc
 
   return (
     <AnimatePresence>
-      {open && <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-3 backdrop-blur-sm sm:p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <motion.div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="member-attendance-details-title" initial={{ opacity: 0, y: 18, scale: 0.985 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.985 }} className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:rounded-3xl">
+      {open && <AdminModal><motion.div
+        className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:rounded-3xl"
+        initial={{ opacity: 0, y: 18, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.985 }}
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="member-attendance-details-title"
+      >
           <header className="flex shrink-0 items-start justify-between border-b border-ink/10 px-5 py-5 sm:px-7">
             <div><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-ink/40">Visit record</p><h2 id="member-attendance-details-title" className="mt-2 font-heading text-3xl uppercase tracking-wide text-ink">Attendance details</h2></div>
             <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Close attendance details" className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 text-ink/55 transition hover:border-accent hover:text-ink"><X size={18} /></button>
@@ -48,7 +57,7 @@ export default function AttendanceDetailsModal({ open, loading, error, attendanc
             {loading ? <div className="flex min-h-56 items-center justify-center"><span className="flex items-center gap-3 text-sm text-ink/45"><Clock3 className="animate-pulse" size={19} /> Loading attendance details...</span></div> : error ? <div className="flex min-h-56 items-center justify-center"><div className="max-w-sm text-center"><p className="text-sm leading-6 text-ink/60">{error}</p><button type="button" onClick={onRetry} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-accent"><RefreshCw size={15} /> Retry</button></div></div> : attendance && <>
               <div className="flex flex-col gap-4 rounded-2xl bg-ink p-5 text-white sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-ink"><CalendarDays size={19} /></span><div><p className="text-xs text-white/45">Visit date</p><p className="mt-1 font-semibold">{formatAttendanceDate(attendance.checked_in_at)}</p></div></div>
-                <span className={`w-fit rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] ${attendance.session_state === 'open' ? 'bg-accent text-ink' : 'bg-white/10 text-white'}`}>{attendance.session_state === 'open' ? 'Currently open' : 'Completed'}</span>
+                <span className="w-fit rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-ink">{attendance.session_state === 'open' ? 'Currently open' : 'Completed'}</span>
               </div>
               <dl className="mt-5 grid gap-4 rounded-2xl border border-ink/10 bg-ink/[0.02] p-5 sm:grid-cols-2">
                 <div><dt className="text-xs text-ink/40">Check-in</dt><dd className="mt-1 text-sm font-semibold text-ink">{formatAttendanceDateTime(attendance.checked_in_at)}</dd></div>
@@ -63,8 +72,7 @@ export default function AttendanceDetailsModal({ open, loading, error, attendanc
           <footer className="shrink-0 border-t border-ink/10 bg-white px-5 py-4 text-right sm:px-7">
             <button type="button" onClick={onClose} className="w-full rounded-xl bg-ink px-5 py-3 text-sm font-bold text-accent transition hover:-translate-y-0.5 sm:w-auto">Close</button>
           </footer>
-        </motion.div>
-      </motion.div>}
+      </motion.div></AdminModal>}
     </AnimatePresence>
   )
 }
