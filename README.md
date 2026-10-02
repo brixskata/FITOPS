@@ -1,4 +1,4 @@
-# 🏋️ FitOps
+# FitOps
 
 A modern full-stack Gym Management System built with React, Laravel 12, Sanctum, and MySQL.
 
